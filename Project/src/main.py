@@ -1,13 +1,20 @@
 from fastapi import FastAPI
-from routers import users, notes
+from fastapi.staticfiles import StaticFiles
+from routers import users, notes, chat
 from database import init_db
 import uvicorn
+import os
 
-app = FastAPI(title="JotangNote 笔记平台", description="焦糖工作室后端招新入门篇")
+app = FastAPI(title="JotangNote 笔记平台", description="焦糖工作室后端招新入门篇+进阶篇")
 
 # 注册路由
 app.include_router(users.router)
 app.include_router(notes.router)
+app.include_router(chat.router)
+
+# 挂载前端静态文件
+static_path = os.path.join(os.path.dirname(__file__), "..", "static")
+app.mount("/", StaticFiles(directory=static_path, html=True), name="static")
 
 @app.on_event("startup")
 def startup():
