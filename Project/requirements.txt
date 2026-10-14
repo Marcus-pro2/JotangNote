@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pymysql
+cryptography
+redis
+pika
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
