@@ -12,7 +12,7 @@ router = APIRouter(prefix="/notes", tags=["笔记"])
 
 def get_user_id_by_username(username: str) -> int:
     """根据用户名查用户ID"""
-    conn = next(get_db())
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute("SELECT id FROM users WHERE username = %s", (username,))
     user = cursor.fetchone()
@@ -37,7 +37,7 @@ def get_note(note_id: int, current_user: dict = Depends(get_current_user)):
         return json.loads(cached)
 
     # 2. 缓存没命中，查MySQL
-    conn = next(get_db())
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM notes WHERE id = %s", (note_id,))
     note = cursor.fetchone()
@@ -92,7 +92,7 @@ def update_note(note_id: int, note: NoteUpdate, current_user: dict = Depends(get
     user_id = get_user_id_by_username(current_user["username"])
 
     # 先校验笔记归属（同步查一下，防止改别人的）
-    conn = next(get_db())
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute("SELECT user_id FROM notes WHERE id = %s", (note_id,))
     db_note = cursor.fetchone()
@@ -135,7 +135,7 @@ def delete_note(note_id: int, current_user: dict = Depends(get_current_user)):
     user_id = get_user_id_by_username(current_user["username"])
 
     # 校验归属
-    conn = next(get_db())
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute("SELECT user_id FROM notes WHERE id = %s", (note_id,))
     db_note = cursor.fetchone()

@@ -5,7 +5,7 @@ from mq import get_rabbitmq_channel, NOTE_QUEUE
 
 def execute_create(data: dict):
     """执行新增笔记"""
-    conn = next(get_db())
+    conn = get_db()
     cursor = conn.cursor()
     try:
         cursor.execute(
@@ -20,7 +20,7 @@ def execute_create(data: dict):
 
 def execute_update(data: dict):
     """执行修改笔记"""
-    conn = next(get_db())
+    conn = get_db()
     cursor = conn.cursor()
     try:
         # 幂等性处理：先查笔记是否存在
@@ -54,7 +54,7 @@ def execute_update(data: dict):
 
 def execute_delete(data: dict):
     """执行删除笔记"""
-    conn = next(get_db())
+    conn = get_db()
     cursor = conn.cursor()
     try:
         # 幂等性处理：先查是否存在

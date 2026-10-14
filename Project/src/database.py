@@ -13,12 +13,8 @@ DB_CONFIG = {
 }
 
 def get_db():
-    """获取数据库连接，用完后关闭"""
-    conn = pymysql.connect(**DB_CONFIG)
-    try:
-        yield conn
-    finally:
-        conn.close()
+    """获取数据库连接"""
+    return pymysql.connect(**DB_CONFIG)
 
 def init_db():
     """初始化数据库和表"""

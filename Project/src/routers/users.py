@@ -9,7 +9,7 @@ router = APIRouter(prefix="/users", tags=["用户"])
 @router.post("/register", summary="用户注册")
 def register(user: UserRegister):
     """用户注册：新增一条用户记录"""
-    conn = next(get_db())
+    conn = get_db()
     cursor = conn.cursor()
     try:
         # 检查用户名是否已存在
@@ -32,7 +32,7 @@ def register(user: UserRegister):
 @router.post("/login", summary="用户登录")
 def login(user: UserLogin):
     """用户登录：校验账号密码，返回JWT token"""
-    conn = next(get_db())
+    conn = get_db()
     cursor = conn.cursor()
     try:
         cursor.execute("SELECT * FROM users WHERE username = %s", (user.username,))
